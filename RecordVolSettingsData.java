@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
  * script that runs this java program every minute of every day of every month...etc. 
  * (e.g. * * * * * . /Users/USER/pathOfBashScript.sh)
  * If you want the data to be collected less often, modify the cron job accordingly. 
+ * The default cron job will be set by the installation file.
  */
 class RecordVolSettingsData{
     void keepTrack(VolumeSettings current){
@@ -18,7 +19,7 @@ class RecordVolSettingsData{
 	Date now = new Date();
 	String currentDate = format.format(now);
 	final File parentPath = new File("/tmp");
-	final File path = new File(parentPath, "vsdata.txt");
+	final File path = new File(parentPath, "user_vsdata.txt");
 	/*
 	  try{
 	  path.createNewFile();
