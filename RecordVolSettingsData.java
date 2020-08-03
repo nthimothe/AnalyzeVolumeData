@@ -45,6 +45,6 @@ class RecordVolSettingsData{
     public static void main(String[] args){
 	VolumeSettings data = new VolumeSettings();
 	RecordVolSettingsData write = new RecordVolSettingsData();
-	write.keepTrack(data.getVolumeSettings());
+	write.keepTrack(data.getSysVolumeSettings());
     }
 }

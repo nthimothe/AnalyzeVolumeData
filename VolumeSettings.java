@@ -50,7 +50,7 @@ public class VolumeSettings{
 	    /*
 	    //since the requested outputV may not match the actual system outputV, find out what the system has approximated the argument too
 	    /* This is not ideal because we are rewriting the other 2 unchanged values */
-	    getVolumeSettings();
+	    getSysVolumeSettings();
 
 	    return true;
 	} catch (IOException e){
@@ -72,7 +72,7 @@ public class VolumeSettings{
 	    }
 	    //since the requested inputV may not match the actual system input size, find out what the system has approximated the argument too
 	    /* This is not ideal because we are rewriting the other 3 unchanged values */
-	    getVolumeSettings();
+	    getSysVolumeSettings();
 
 	    return true;
 	} catch (IOException e){
@@ -81,7 +81,7 @@ public class VolumeSettings{
 	return false;
     }
     //get VolumeSettings from System Settings and set the parameters of the current object
-    public VolumeSettings getVolumeSettings(){
+    public VolumeSettings getSysVolumeSettings(){
 	//VolumeSettings settings = new VolumeSettings();
 	try{
 	    //start the osascript process with -e (as arg1) and 'get volume settings' (as arg2)
@@ -100,10 +100,8 @@ public class VolumeSettings{
 		this.alertVolume = Integer.valueOf((fourParts[2].split(":"))[1]);
 		//convert the boolean value to an integer
 		this.outputMuted = ((fourParts[3].split(":"))[1].equals("true")) ? 1 : 0;
-		//advance the line
-		line = buffRead.readLine();
-	    }
-	    else{
+		bRead.close();
+	    } else{
 		System.out.println("That process returned no data.");
 	    }
 	} catch (IOException e){ //in the case that I encounter some error
@@ -119,7 +117,7 @@ public class VolumeSettings{
     }
     public static void main(String[] args){
 	VolumeSettings vol = new VolumeSettings();
-	System.out.println(vol.getVolumeSettings().toString());
+	System.out.println(vol.getSysVolumeSettings().toString());
 	Scanner s = new Scanner(System.in);
 	//prompt user
 	System.out.print("Please enter an output volume: ");
