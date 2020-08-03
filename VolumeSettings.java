@@ -100,7 +100,7 @@ public class VolumeSettings{
 		this.alertVolume = Integer.valueOf((fourParts[2].split(":"))[1]);
 		//convert the boolean value to an integer
 		this.outputMuted = ((fourParts[3].split(":"))[1].equals("true")) ? 1 : 0;
-		bRead.close();
+		buffRead.close();
 	    } else{
 		System.out.println("That process returned no data.");
 	    }

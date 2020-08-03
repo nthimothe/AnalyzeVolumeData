@@ -137,7 +137,7 @@ class VolumeSettingsStatistics{
     
     int volumeAverage(int volumeType){ //0 volumeType indicates output, 1 volumeType indicates input
 	int totalAccesses = countEntries();
-	int accumulation = 0;
+	double accumulation = 0;
 	for (Map.Entry<VolumeSettings,Calendar> entry : map.entrySet()){
 	    VolumeSettings currentVS = entry.getKey();
 	    if (volumeType == 0){
@@ -146,7 +146,7 @@ class VolumeSettingsStatistics{
 		accumulation += currentVS.getInputVol();
 	    }
 	}
-	return (accumulation / totalAccesses);
+	return (int)(Math.round(accumulation / totalAccesses));
     }
     
     //provided a map of (VS,Cal), calculate the number of times a field shifts

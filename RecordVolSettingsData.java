@@ -20,13 +20,6 @@ class RecordVolSettingsData{
 	String currentDate = format.format(now);
 	final File parentPath = new File("/tmp");
 	final File path = new File(parentPath, "user_vsdata.txt");
-	/*
-	  try{
-	  path.createNewFile();
-	  } catch (IOException ex){
-	  ex.printStackTrace();
-	  }
-	*/
 	try{
 	    //write the current VolumeSettings to this path
 	    //make sure to append to this file!
@@ -39,7 +32,6 @@ class RecordVolSettingsData{
 	    bWrite.close();
 	} catch (IOException e){
 	    e.printStackTrace();
-
 	}
     }
     public static void main(String[] args){
