@@ -10,9 +10,7 @@ import java.text.ParseException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-/* In order for this program to consistently provide an analysis of the previous day's
- * volume settings, add a bash script to your bash profile that runs this program.
- */
+
 class VolumeSettingsStatistics{
     Map<VolumeSettings,Calendar> map;
 
@@ -82,18 +80,17 @@ class VolumeSettingsStatistics{
     Map<Integer,Integer> outputVolMode(){
 	//a map of frequencies (k = outputVol, v = number of times accessed)
 	Map<Integer,Integer> ovFrequencies = new Hashtable<>();
-
+	int outputVol, currCount;
 	//traverse this.map and extract outputVolume
 	for (Map.Entry<VolumeSettings,Calendar> entry : map.entrySet()){
-	    int outputVol = entry.getKey().getOutputVol();
+	    outputVol = entry.getKey().getOutputVol();
 	    //if it is the first time you are seeing a particular volume value, put it in the map with count 1
 	    if (!(ovFrequencies.containsKey(outputVol))){
 		ovFrequencies.put(outputVol,1);
 		//if the vol has been seen before, remove it from map, increment the current count, and put back
 	    } else if (ovFrequencies.containsKey(outputVol)){
-		int currCount = ovFrequencies.remove(outputVol);
-		currCount++;
-		ovFrequencies.put(outputVol,currCount);
+		currCount = ovFrequencies.get(outputVol);
+		ovFrequencies.put(outputVol, ++currCount);
 	    }
 	}
 
@@ -106,18 +103,17 @@ class VolumeSettingsStatistics{
     Map<Integer,Integer> inputVolMode(){
 	//a map of frequencies (k = inputVol, v = number of times accessed)
 	Map<Integer,Integer> ivFrequencies = new Hashtable<>();
-
+	int inputVol, currCount;
 	//traverse this.map and extract outputVolume
 	for (Map.Entry<VolumeSettings,Calendar> entry : map.entrySet()){
-	    int inputVol = entry.getKey().getInputVol();
+	    inputVol = entry.getKey().getInputVol();
 	    //if it is the first time you are seeing a particular volume value, put it in the map with count 1
 	    if (!(ivFrequencies.containsKey(inputVol))){
 		ivFrequencies.put(inputVol,1);
 		//if the vol has been seen before, remove it from map, increment the current count, and put back
 	    } else if (ivFrequencies.containsKey(inputVol)){
-		int currCount = ivFrequencies.remove(inputVol);
-		currCount++;
-		ivFrequencies.put(inputVol,currCount);
+		currCount = ivFrequencies.get(inputVol);
+		ivFrequencies.put(inputVol, ++currCount);
 	    }
 	}
 	return findMax(ivFrequencies);
@@ -126,10 +122,9 @@ class VolumeSettingsStatistics{
     //find the key with the highest value and return that entry
     Map<Integer,Integer> findMax(Map<Integer,Integer> frequencies){
 	Map<Integer,Integer> highest = new Hashtable<>();
-	int key = 0;
-	int maxVal = 0;
+	int key = 0, maxVal = 0, val;
 	for (Map.Entry<Integer,Integer> entry : frequencies.entrySet()){
-	    int val = entry.getValue();
+	    val = entry.getValue();
 	    //if I find a value that is greater than my max, then my max is now that value
 	    if (val > maxVal){
 		key = entry.getKey();
@@ -260,21 +255,18 @@ class VolumeSettingsStatistics{
 	    if (ovFreq == totalAccesses){
 		System.out.println("Your output volume level was " + ovMostAccessed + " the entire day.");
 		avgOV = ovMostAccessed; //if the volume hasn't changed over the whole day, no calcNeeded
+		//printing average output volume
+		System.out.println("Your average output volume level was " + avgOV + ".");
 	    } else{
 		System.out.println("For " + stats.percentage(ovFreq,totalAccesses) + "% of the day, your output volume level was " + ovMostAccessed + " (" + ovFreq + "/" + totalAccesses + ").");
 		avgOV = stats.volumeAverage(0);
+		//printing average output volume
+		System.out.println("Your average output volume level was " + avgOV + ".");
 		//calculating the number of outputVolume shifts
 		numOVShifts = stats.trackShifts(0);
 		//only if the number of shifts is 1 do you want to display "time"
 		ovShiftStatement = (numOVShifts == 1) ? "You changed your output volume level " + numOVShifts + " time yesterday." : "You changed your output volume level " + numOVShifts + " times yesterday.";
-	    }
-	    
-	    //printing average output volume
-	    System.out.println("Your average output volume level was " + avgOV + ".");
-	    
-	    //will only print shifts if my output volume wasn't the same the entire day!
-	    if (ovFreq != totalAccesses){
-		//printing number of outputVolume shifts 
+		//will only print shifts if my output volume wasn't the same the entire day!
 		System.out.println(ovShiftStatement);
 	    }
 	    
@@ -300,22 +292,21 @@ class VolumeSettingsStatistics{
 	    if (ivFreq == totalAccesses){
 		System.out.println("Your input volume level was " + ivMostAccessed + " for the entire day.");
 		avgIV = ivMostAccessed;
+		//printing average input Volume
+		System.out.println("Your average input volume level was " + avgIV + ".");
+
 	    } else{
 		System.out.println("For " + stats.percentage(ivFreq,totalAccesses) + "% of the day, your input volume level was " + ivMostAccessed + " (" + ivFreq + "/" + totalAccesses + ").");
 		avgIV = stats.volumeAverage(1);
+		//printing average input Volume
+		System.out.println("Your average input volume level was " + avgIV + ".");
 		//determining the number of shifts made to input volumte
 		numIVShifts = stats.trackShifts(1);
 		ivShiftStatement = (numIVShifts == 1) ? "You changed your input volume level 1 time yesterday." : "You changed your input volume level " + numIVShifts + " times yesterday.";
-	    }
-	    
-	    //printing average input Volume
-	    System.out.println("Your average input volume level was " + avgIV + ".");
-	    
-	    //will only print shifts if my input volume wasn't the same the entire day!
-	    if (ivFreq != totalAccesses){
 		//printing number of input volume shifts
 		System.out.println(ivShiftStatement);
 	    }
+
 	    
 	    /* OUTPUT MUTED */
 	    //track the number of times the computer was muted
@@ -328,6 +319,8 @@ class VolumeSettingsStatistics{
 	    
 	    //disclaimer
 	    System.out.println("\n***This data was collected once every minute that the machine was running yesterday.***");
+
+	    // if there is no data, tell the user that there is no data
 	} else{
 	    String user = "";
 	    try{
