@@ -42,7 +42,7 @@ function create_run_script {
 	echo "java VolumeSettingsStatistics < /tmp/user_vsdata.txt" >> $VSSTATS_SCRIPT
 
         # return to previous location
-	echo "cd \${location}" >> $VSSTATS_SCRIPT
+	echo "cd \"\${location}\"" >> $VSSTATS_SCRIPT
 	echo "Successfully wrote $VSSTATS_SCRIPT..."
     else 
 	echo "$VSSTATS_SCRIPT already exists..."
@@ -56,8 +56,8 @@ function preserve_cron {
 
 function append_to_cron {
     line="* * * * * . ${loc}/runRVSD.sh"
-	echo "Potentially prompting for password to add cronjob..."
     if [ ! -f "collect.cron" ]; then
+	echo "Potentially prompting for password to add cronjob..."
 	preserve_cron
 	echo "$line" >> $CRON_FILE
 	sudo crontab $CRON_FILE
@@ -70,7 +70,7 @@ function append_to_cron {
 
 function append_to_profile {
     if ! bash_job_exists; then 
-	echo ". ${loc}/$VSSTATS_SCRIPT" >> ${HOME}/.bash_profile
+	echo -e "\n. ${loc}/$VSSTATS_SCRIPT" >> ${HOME}/.bash_profile
     else 
 	echo "Bash job already exists..."
     fi
@@ -84,7 +84,7 @@ function bash_job_exists {
     [[ ! -z "$job" ]] && return
 }
 
-
+echo "Attempting to create file with root permission..."
 # make sure volume data file is present to avoid "No such file" error
 sudo touch /tmp/user_vsdata.txt
 
