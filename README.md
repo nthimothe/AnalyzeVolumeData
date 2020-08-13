@@ -1,4 +1,4 @@
-# Analayze Volume Data
+# Analyze Volume Data
 
 Summarize your input and output volume over the course of a day with this program!
 
