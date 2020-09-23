@@ -6,12 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-/* In order for this program to consistently capture volume data, edit your cron jobs to run a bash 
- * script that runs this java program every minute of every day of every month...etc. 
- * (e.g. * * * * * . /Users/USER/pathOfBashScript.sh)
- * If you want the data to be collected less often, modify the cron job accordingly. 
- * The default cron job will be set by the installation file.
- */
+
 class RecordVolSettingsData{
     void keepTrack(VolumeSettings current){
 	//format for 12hr date: MM/dd/yyyy hh:mm:ss aa
